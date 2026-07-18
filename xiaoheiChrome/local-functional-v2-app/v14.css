@@ -1,0 +1,47 @@
+/* V14 environment consistency audit */
+.environment-audit {
+  margin-top: 18px;
+  padding-top: 15px;
+  border-top: 1px solid var(--border);
+}
+.audit-head {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: 8px;
+  margin-bottom: 9px;
+}
+.audit-head strong { font-size: 11px; }
+.audit-head span {
+  padding: 4px 7px;
+  border-radius: 999px;
+  background: #eaf8f3;
+  color: #16875f;
+  font-size: 9px;
+}
+.audit-head span.review { background: #fff4d8; color: #a76500; }
+.audit-row {
+  display: grid;
+  grid-template-columns: 8px 1fr;
+  gap: 8px;
+  padding: 8px 0;
+  border-bottom: 1px solid #f0f2f6;
+}
+.audit-row i {
+  width: 7px;
+  height: 7px;
+  margin-top: 3px;
+  border-radius: 50%;
+  background: #6b86c8;
+}
+.audit-row.pass i { background: #1ca773; }
+.audit-row.warn i { background: #e69a18; }
+.audit-row strong,
+.audit-row small { display: block; }
+.audit-row strong { color: #344158; font-size: 9px; }
+.audit-row small {
+  margin-top: 3px;
+  color: #7b8799;
+  font-size: 8px;
+  line-height: 1.45;
+}

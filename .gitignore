@@ -1,0 +1,47 @@
+# Dependencies and build output
+node_modules/
+dist/
+build/
+out/
+*.asar
+*.zip
+*.7z
+*.crx
+
+# Never publish executable or third-party runtime binaries
+*.exe
+*.dll
+*.pak
+*.bin
+xiaoheiChrome/local-functional-v2-runtime/
+
+# Reverse-engineering and local analysis artifacts are not source releases
+vendor-analysis/
+lumao-analysis/
+
+# Browser profiles and sensitive browsing data
+**/browser-profiles*/
+**/User Data/
+**/Default/Network/
+**/Default/Cookies*
+**/Default/Login Data*
+**/Default/Local Storage/
+**/Default/IndexedDB/
+**/Default/Sessions/
+**/Default/Cache/
+**/Default/Code Cache/
+**/Default/GPUCache/
+**/DevToolsActivePort
+
+# Logs, caches and local secrets
+*.log
+.cache/
+cache/
+tmp/
+.env
+.env.*
+*.pem
+*.key
+credentials.json
+browserops-local-settings.json
+browserops-v2-engine.json

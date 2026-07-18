@@ -1,0 +1,228 @@
+<!doctype html>
+<html lang="zh-CN">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <title>小黑多开器</title>
+  <link rel="icon" type="image/png" href="assets/logo.png">
+  <link rel="stylesheet" href="styles.css?v=20260716-storage1">
+  <link rel="stylesheet" href="themes.css?v=20260716-theme2">
+  <link rel="stylesheet" href="v14.css?v=20260717-v14">
+  <style id="profile-typography-v2">
+    #view-profiles .table-card { overflow-x: auto; }
+    #view-profiles .table-card table,
+    #view-profiles .table-card th,
+    #view-profiles .table-card td,
+    #view-profiles .table-card th *,
+    #view-profiles .table-card td * {
+      font-family: "Microsoft YaHei UI", "Microsoft YaHei", "Segoe UI", sans-serif !important;
+      font-size: 15px !important;
+      line-height: 1.45 !important;
+    }
+    #view-profiles .table-card th, #view-profiles .table-card td { padding: 15px 12px !important; }
+    #view-profiles .table-card th, #view-profiles .table-card td,
+    #view-profiles .table-card button { white-space: nowrap; }
+    #view-profiles .table-card .profile-name small { margin-top: 4px; }
+    #view-profiles .table-card .network-info { gap: 5px; }
+    #view-profiles .table-card .mini, #view-profiles .table-card .network-check { padding: 7px 10px !important; }
+  </style>
+</head>
+<body>
+  <div class="app-shell">
+    <aside class="sidebar">
+      <div class="brand"><div class="logo"><img src="assets/logo.png" alt="小黑多开器"></div><strong>小黑多开器</strong></div>
+      <button class="new-browser" id="quick-create">新建浏览器 <b>＋</b></button>
+      <nav>
+        <button class="nav active" data-view="profiles"><span>▣</span>环境管理</button>
+        <button class="nav" data-view="extensions"><span>♧</span>应用中心</button>
+        <div class="nav-label">自动化</div>
+        <button class="nav" data-view="sync"><span>⌘</span>窗口同步</button>
+        <button class="nav" data-view="logs"><span>≡</span>操作日志</button>
+        <button class="nav" data-view="system"><span>⚙</span>本地设置</button>
+      </nav>
+      <div class="sidebar-status"><i></i><div><strong>Clean-room Local</strong><small>不连接厂商服务</small></div></div>
+    </aside>
+
+    <div class="content">
+      <header>
+        <div><h1 id="page-title">环境管理</h1><p id="page-subtitle">真实 Chrome / Edge 独立用户目录</p></div>
+        <div class="header-right">
+          <div class="theme-picker" id="theme-picker">
+            <button class="theme-trigger" id="theme-trigger" type="button" aria-expanded="false"><i class="theme-trigger-dot"></i><span>主题</span></button>
+            <div class="theme-popover" id="theme-popover" hidden>
+              <div class="theme-popover-head"><strong>界面主题</strong><span id="theme-current">经典蓝</span></div>
+              <div class="theme-grid">
+                <button class="theme-option" type="button" data-theme-option="classic"><i></i><span>经典蓝</span></button>
+                <button class="theme-option" type="button" data-theme-option="sky"><i></i><span>天空蓝</span></button>
+                <button class="theme-option" type="button" data-theme-option="mint"><i></i><span>薄荷绿</span></button>
+                <button class="theme-option" type="button" data-theme-option="lemon"><i></i><span>柠檬黄</span></button>
+                <button class="theme-option" type="button" data-theme-option="peach"><i></i><span>蜜桃橙</span></button>
+                <button class="theme-option" type="button" data-theme-option="rose"><i></i><span>樱花粉</span></button>
+                <button class="theme-option" type="button" data-theme-option="lavender"><i></i><span>薰衣紫</span></button>
+                <button class="theme-option" type="button" data-theme-option="teal"><i></i><span>湖水青</span></button>
+                <button class="theme-option" type="button" data-theme-option="coral"><i></i><span>珊瑚红</span></button>
+                <button class="theme-option" type="button" data-theme-option="navy"><i></i><span>深海蓝</span></button>
+                <button class="theme-option" type="button" data-theme-option="forest"><i></i><span>森林绿</span></button>
+                <button class="theme-option" type="button" data-theme-option="mocha"><i></i><span>暖灰棕</span></button>
+              </div>
+            </div>
+          </div>
+          <span class="engine-badge">● LOCAL ENGINE</span><span id="browser-summary">正在检测浏览器…</span>
+        </div>
+      </header>
+
+      <main>
+        <section class="view active" id="view-profiles">
+          <div class="toolbar">
+            <div class="toolbar-left"><button class="primary" id="create-profile">＋ 新建环境</button><button class="outline" id="batch-add">&#65291; &#25209;&#37327;&#26032;&#22686;</button><button class="outline" id="batch-import">&#8681; &#25209;&#37327;&#23548;&#20837;</button><button class="outline" id="batch-update">&#8635; &#25209;&#37327;&#26356;&#26032;/IP</button><input id="batch-import-file" type="file" accept=".csv,.json" hidden><button class="outline" id="start-selected">▶ 启动选中</button><button class="outline" id="stop-selected">■ 停止选中</button><button class="danger" id="delete-selected">&#128465; &#25209;&#37327;&#21024;&#38500;</button><div class="profile-pagination toolbar-pagination" id="profile-pagination"><span class="profile-total">&#24635;&#25968;&#65306;<strong id="profile-total">0</strong></span><div class="profile-page-nav"><button type="button" id="profile-prev" aria-label="&#19978;&#19968;&#39029;">&#8249;</button><label><input id="profile-page" type="number" min="1" value="1" aria-label="&#24403;&#21069;&#39029;"> / <span id="profile-pages">1</span></label><button type="button" id="profile-next" aria-label="&#19979;&#19968;&#39029;">&#8250;</button></div><label class="profile-page-size"><select id="profile-page-size" aria-label="&#27599;&#39029;&#25968;&#37327;"><option value="10">10&#26465;/&#39029;</option><option value="20">20&#26465;/&#39029;</option><option value="50">50&#26465;/&#39029;</option><option value="100">100&#26465;/&#39029;</option></select></label></div></div>
+            <label class="search"><span>⌕</span><input id="profile-search" placeholder="搜索环境"></label>
+          </div>
+          <div class="table-card">
+            <table><thead><tr><th><input type="checkbox" id="select-all-profiles"></th><th>环境编号</th><th>环境名称</th><th>浏览器</th><th>代理</th><th>&#20986;&#21475; IP / &#22269;&#23478;</th><th>扩展数</th><th>状态</th><th>操作</th></tr></thead><tbody id="profile-table"></tbody></table>
+            <div class="empty" id="profile-empty" hidden>暂无环境</div>
+          </div>
+
+        </section>
+
+        <section class="view" id="view-profile-editor">
+          <div class="profile-editor-head">
+            <button class="editor-back" id="editor-back" type="button">‹ 返回</button>
+            <div><h2>编辑浏览器环境 <span id="editor-profile-id"></span></h2><p>配置独立 Chrome 用户目录、代理、隐私和启动行为</p></div>
+          </div>
+          <div class="editor-tabs" role="tablist">
+            <button class="active" type="button" data-editor-tab="basic">基础设置</button>
+            <button type="button" data-editor-tab="proxy">代理信息</button>
+            <button type="button" data-editor-tab="privacy">隐私配置</button>
+            <button type="button" data-editor-tab="advanced">高级设置</button>
+          </div>
+          <div class="environment-editor">
+            <form id="profile-editor-form" class="editor-form">
+              <input id="editor-id" type="hidden">
+              <section class="editor-panel active" data-editor-panel="basic">
+                <h3>基础设置</h3>
+                <label>名称（跟随环境编号）<input id="editor-name" maxlength="100" required readonly></label>
+                <div class="form-two"><label>浏览器<select id="editor-browser"><option>Google Chrome</option></select></label><label>操作系统<select id="editor-os"><option>Windows</option><option>macOS</option><option>Linux</option></select></label></div>
+                <label>User-Agent<textarea id="editor-user-agent" rows="3" placeholder="留空时使用当前 Chrome 默认 User-Agent"></textarea></label>
+                <label>Cookie JSON<textarea id="editor-cookies" rows="6" placeholder='[{"name":"session","value":"...","domain":"example.com","path":"/"}]'></textarea><small>保存后在下次启动时导入；只接受标准 Cookie JSON 数组。</small></label>
+                <div class="form-two"><label>语言<select id="editor-language"><option value="zh-CN">中文</option><option value="en-US">English (US)</option><option value="ja-JP">日本語</option><option value="ko-KR">한국어</option></select></label><label>标签<input id="editor-tag" maxlength="40"></label></div>
+                <label>备注<textarea id="editor-note" rows="3" maxlength="2000" placeholder="输入备注"></textarea></label>
+              </section>
+              <section class="editor-panel" data-editor-panel="proxy">
+                <h3>代理信息</h3>
+                <div class="segmented" id="editor-network-mode"><label><input type="radio" name="editor-network" value="direct">本地直连</label><label><input type="radio" name="editor-network" value="custom">自定义代理</label></div>
+                <div id="editor-proxy-fields">
+                  <div class="form-two"><label>代理类型<select id="editor-proxy-type"><option value="socks5">SOCKS5</option><option value="http">HTTP</option><option value="https">HTTPS</option></select></label><label>IP 查询通道<select id="editor-ip-channel"><option value="ip-api">IP-API</option><option value="ip2location">IP2Location（失败时回退 IP-API）</option></select></label></div>
+                  <div class="proxy-host-row"><label>主机<input id="editor-proxy-host" placeholder="127.0.0.1"></label><label>端口<input id="editor-proxy-port" type="number" min="1" max="65535" placeholder="1080"></label><button class="outline" id="editor-test-proxy" type="button">检查代理</button></div>
+                  <div class="form-two"><label>代理账号<input id="editor-proxy-user" autocomplete="off"></label><label>代理密码<input id="editor-proxy-password" type="password" autocomplete="new-password"></label></div>
+                  <label>刷新 URL（可选）<input id="editor-refresh-url" type="url" placeholder="https://provider.example/refresh"></label>
+                  <div class="proxy-test-result" id="editor-proxy-result">尚未检测</div>
+                </div>
+              </section>
+              <section class="editor-panel" data-editor-panel="privacy">
+                <h3>隐私与本地化</h3>
+                <div class="settings-row"><span>WebRTC</span><select id="editor-webrtc"><option value="proxy">仅代理连接</option><option value="disabled">禁用非代理 UDP</option><option value="real">真实网络</option></select></div>
+                <div class="settings-row"><span>时区</span><select id="editor-timezone-mode"><option value="ip">基于出口 IP</option><option value="real">系统真实</option><option value="custom">自定义</option></select><input id="editor-timezone" placeholder="Asia/Shanghai"></div>
+                <div class="settings-row"><span>地理位置</span><select id="editor-geo-mode"><option value="ip">基于出口 IP</option><option value="disabled">禁止网站访问</option><option value="custom">自定义</option></select></div>
+                <div class="form-three geo-custom"><label>纬度<input id="editor-latitude" type="number" step="0.000001" min="-90" max="90"></label><label>经度<input id="editor-longitude" type="number" step="0.000001" min="-180" max="180"></label><label>精度（米）<input id="editor-accuracy" type="number" min="1" max="100000" value="100"></label></div>
+                <div class="settings-row"><span>界面语言</span><select id="editor-ui-language"><option value="profile">跟随语言</option><option value="system">系统真实</option><option value="zh-CN">中文</option><option value="en-US">English</option></select></div>
+                <div class="settings-row"><span>分辨率</span><select id="editor-resolution"><option value="1280x820">1280 × 820</option><option value="1366x768">1366 × 768</option><option value="1440x900">1440 × 900</option><option value="1920x1080">1920 × 1080</option><option value="custom">自定义</option></select><input id="editor-width" type="number" min="640" max="7680" placeholder="宽"><input id="editor-height" type="number" min="480" max="4320" placeholder="高"></div>
+                <div class="settings-row"><span>字体</span><select id="editor-font-mode"><option value="default">默认</option><option value="custom">自定义字号</option></select><input id="editor-font-size" type="number" min="9" max="36" value="16"></div>
+                <div class="privacy-grid">
+                  <label>Canvas<select id="editor-canvas"><option value="real">真实</option><option value="blocked">禁止读取</option></select></label>
+                  <label>WebGL<select id="editor-webgl"><option value="real">真实</option><option value="blocked">禁用</option></select></label>
+                  <label>WebGPU<select id="editor-webgpu"><option value="real">真实</option><option value="blocked">禁用</option></select></label>
+                  <label>AudioContext<select id="editor-audio"><option value="real">真实</option><option value="muted">静音输出</option></select></label>
+                  <label>媒体设备<select id="editor-media"><option value="real">按网站询问</option><option value="blocked">禁止访问</option></select></label>
+                  <label>ClientRects<select id="editor-client-rects"><option value="real">真实</option></select></label>
+                  <label>SpeechVoices<select id="editor-speech"><option value="real">真实</option><option value="blocked">禁用语音 API</option></select></label>
+                </div>
+                <label class="check-row"><input id="editor-dnt" type="checkbox">发送 Do Not Track 请求</label>
+              </section>
+              <section class="editor-panel" data-editor-panel="advanced">
+                <h3>数据与浏览器设置</h3>
+                <div class="advanced-card"><strong>保存的数据</strong><div class="check-grid"><label><input id="editor-save-cookies" type="checkbox" checked>Cookie</label><label><input id="editor-save-passwords" type="checkbox">已保存的密码</label><label><input id="editor-save-bookmarks" type="checkbox" checked>书签</label><label><input id="editor-save-local-storage" type="checkbox" checked>Local storage</label><label><input id="editor-save-indexeddb" type="checkbox" checked>IndexedDB</label><label><input id="editor-save-history" type="checkbox" checked>历史记录</label></div></div>
+                <div class="advanced-card"><strong>启动时</strong><label class="check-row"><input id="editor-allow-signin" type="checkbox">允许登录 Chrome</label><label class="check-row"><input id="editor-restore-session" type="checkbox">继续浏览上次打开的网页</label><label class="check-row"><input id="editor-block-video" type="checkbox">限制视频自动播放</label><label class="check-row"><input id="editor-block-images" type="checkbox">禁止加载图片</label><label class="check-row"><input id="editor-clear-cache" type="checkbox">启动时清除缓存</label></div>
+              </section>
+              <div class="editor-actions"><button class="outline" id="editor-cancel" type="button">取消</button><button class="primary" type="submit">保存环境</button></div>
+            </form>
+            <aside class="profile-summary">
+              <div class="summary-head"><strong>概要</strong><button id="editor-system-defaults" type="button">↻ 读取本机默认值</button></div>
+              <dl id="editor-summary"></dl>
+              <section class="environment-audit" id="editor-audit"></section>
+              <p>保存后，运行中的环境需要重启才能应用浏览器级设置。</p>
+            </aside>
+          </div>
+        </section>
+
+        <section class="view" id="view-extensions">
+          <div class="tabs"><button class="active">团队应用</button><button>推荐应用</button><button>本地资源</button></div>
+          <div class="toolbar">
+            <div class="toolbar-left"><button class="primary" id="add-extension">↑ 添加应用目录</button><button class="outline" id="refresh-extensions">↻ 刷新</button></div>
+            <label class="search"><span>⌕</span><input id="extension-search" placeholder="关键词搜索"></label>
+          </div>
+          <div class="extension-note">
+            <strong>真实 Google Chrome 加载</strong>
+            <span>新增扩展默认添加到全部环境；卡片开关会批量启用/停用并自动重启正在运行的环境。</span>
+            <span class="extension-state-legend" aria-label="扩展状态说明">
+              <i class="all"></i>蓝色：全部环境已启用
+              <i class="none"></i>灰色：全部环境已停用
+              <i class="partial"></i>黄色：仅部分环境启用
+            </span>
+          </div>
+          <div class="extension-grid" id="extension-grid"></div>
+          <div class="empty" id="extension-empty" hidden>尚未添加扩展</div>
+        </section>
+
+        <section class="view" id="view-sync">
+          <div class="sync-layout">
+            <div class="sync-main">
+              <div class="sync-toolbar"><select id="sync-group"><option>&#20840;&#37096;&#36816;&#34892;&#29615;&#22659;</option></select><button class="primary" id="start-sync">&#9654; &#21551;&#21160;&#21516;&#27493; (Ctrl+Alt+A)</button><button class="danger-sync" id="stop-sync" hidden>&#9632; &#20572;&#27490;&#21516;&#27493; (Ctrl+Alt+D)</button><button class="outline" id="restart-sync" disabled>&#8635; &#37325;&#21551;&#21516;&#27493; (Ctrl+Alt+R)</button><button class="outline" id="refresh-sessions">&#21047;&#26032;&#20250;&#35805;</button><button class="outline sync-settings-button" id="sync-settings-button" type="button" title="&#21516;&#27493;&#35774;&#32622;">&#9881; &#35774;&#32622;</button><span class="sync-selected" id="sync-selected">&#24050;&#36873;&#25321; 0 &#21015;</span><span class="sync-health idle" id="sync-health">&#21516;&#27493;&#26410;&#21551;&#21160;</span></div>
+              <div class="table-card sync-table"><table><thead><tr><th><input type="checkbox" id="select-all-sessions"></th><th>&#29615;&#22659;&#32534;&#21495;</th><th>&#29615;&#22659;&#21517;&#31216;</th><th>&#27983;&#35272;&#22120;</th><th>&#26631;&#31614;&#39029;</th><th>&#29366;&#24577;</th><th>&#25805;&#20316;</th></tr></thead><tbody id="session-table"></tbody></table><div class="sync-empty" id="session-empty"><div>▱</div><strong>暂无已打开的浏览器环境</strong><span>请先在“环境管理”启动至少两个 profile</span></div></div>
+            </div>
+            <aside class="console">
+              <div class="console-head"><h2>操作台</h2><span id="selected-count">已选 0</span></div>
+              <div class="console-tabs"><button class="active" data-console="window">▱ 窗口管理</button><button data-console="text">▤ 文本管理</button><button data-console="tabs">□ 标签页管理</button></div>
+              <div class="console-panel active" id="console-window">
+                <div class="action-grid"><button data-window="tile">▦ 平铺窗口</button><button data-window="cascade">▱ 层叠窗口</button><button data-window="maximized">□ 最大化</button><button data-window="minimized">— 最小化</button><button data-window="normal">↗ 恢复窗口</button></div>
+                <div class="help-box"><strong>启动同步</strong><p>第一个选中环境作为主控，自动同步当前标签页 URL，并将所有窗口平铺排列。</p></div>
+              </div>
+              <div class="console-panel" id="console-text">
+                <div class="row-actions"><button class="outline" id="clear-text">&#9851; &#28165;&#31354;&#20869;&#23481;</button></div>
+                <div class="simulation-options"><strong>&#20223;&#30495;&#25805;&#20316;</strong><label class="switch-row"><input type="checkbox" id="delay-click"> &#24310;&#36831;&#28857;&#20987;</label><label class="switch-row"><input type="checkbox" id="delay-input"> &#24310;&#36831;&#36755;&#20837;</label></div>
+                <label class="field-label">&#38543;&#26426;&#25968;&#23383;</label>
+                <div class="random-number-row"><span>&#33539;&#22260;</span><input id="random-number-min" type="number" value="0.05" step="0.01"><b>-</b><input id="random-number-max" type="number" value="0.08" step="0.01"><button class="outline" id="send-random-number" type="button">&#36755;&#20837; (Ctrl+Alt+F)</button></div>
+                <label class="field-label">&#30456;&#21516;&#25991;&#26412;<textarea id="sync-text" placeholder="&#20808;&#22312;&#21508;&#27983;&#35272;&#22120;&#20013;&#28857;&#20987;&#36755;&#20837;&#26694;&#65292;&#20877;&#25209;&#37327;&#36755;&#20837;&#25991;&#26412;"></textarea></label>
+                <button class="primary block" id="send-text">&#36755;&#20837; (Ctrl+Q)</button>
+                <section class="specified-text-section">
+                  <div class="specified-text-title"><strong>&#25351;&#23450;&#25991;&#26412;</strong><span>&#25353;&#29615;&#22659;&#20998;&#21035;&#36755;&#20837;</span></div>
+                  <div id="specified-text-groups"></div>
+                  <button class="outline block add-text-group" id="add-specified-text-group" type="button">&#8853; &#28155;&#21152;&#26356;&#22810;&#25991;&#26412;&#32452;</button>
+                </section>
+              </div>              <div class="console-panel" id="console-tabs">
+                <label class="field-label">目标 URL<input id="tab-url" value="https://example.com" placeholder="https://example.com"></label>
+                <div class="action-grid"><button id="new-tab">＋ 新建标签页</button><button id="navigate-tab">→ 导航当前页</button><button id="reload-tab">↻ 刷新页面</button><button id="close-tab">× 关闭当前页</button><button class="wide-action" id="sync-tabs">⇄ 从主控同步全部标签页</button></div>
+                <div id="tab-inventory" class="tab-inventory"></div>
+              </div>
+            </aside>
+          </div>
+        </section>
+
+        <section class="view" id="view-logs"><div class="toolbar"><button class="outline" id="clear-logs">清空日志</button></div><div class="log-card" id="log-list"></div></section>
+        <section class="view" id="view-system"><div class="settings-grid"><article><h3>运行时</h3><dl id="runtime-info"></dl></article><article><h3>能力状态</h3><dl><div><dt>真实浏览器进程</dt><dd class="ok">已启用</dd></div><div><dt>独立用户目录</dt><dd class="ok">已启用</dd></div><div><dt>扩展批量加载</dt><dd class="ok">已启用</dd></div><div><dt>Chrome DevTools Protocol</dt><dd class="ok">已启用</dd></div><div><dt>厂商私有服务</dt><dd>未使用</dd></div></dl></article><article class="storage-settings-card"><div class="storage-settings-head"><div><h3>环境缓存与数据位置</h3><p>各环境的 Chrome 用户目录、Cookie、缓存、本地存储、IndexedDB 和会话数据都会保存在这里。</p></div><span>本地保存</span></div><div class="storage-path-box"><small>当前目录</small><code id="profile-storage-path">正在读取...</code></div><div class="storage-actions"><button class="primary" id="choose-profile-storage" type="button">选择新目录</button><button class="outline" id="open-profile-storage" type="button">打开目录</button><button class="outline" id="reset-profile-storage" type="button">恢复默认位置</button></div><p class="storage-warning">修改前请先停止所有环境。新位置在环境下次启动时生效；旧目录中的数据不会自动移动或删除。</p></article></div></section>
+      </main>
+    </div>
+  </div>
+
+  <dialog id="sync-settings-dialog"><form method="dialog" id="sync-settings-form"><div class="dialog-head"><div><h2>&#21516;&#27493;&#35774;&#32622;</h2><p>&#25511;&#21046;&#20027;&#25511;&#29615;&#22659;&#21521;&#34987;&#25511;&#29615;&#22659;&#36716;&#21457;&#30340;&#40736;&#26631;&#21644;&#38190;&#30424;&#20107;&#20214;</p></div><button value="cancel">&times;</button></div><section class="sync-settings-section"><h3>&#21516;&#27493;</h3><div class="sync-setting-grid"><label><span>&#38190;&#30424;</span><input id="settings-sync-keyboard" type="checkbox" checked> &#21516;&#27493;&#38190;&#20837;</label><label><span>&#40736;&#26631;</span><span class="inline-checks"><input id="settings-sync-click" type="checkbox" checked> &#21516;&#27493;&#28857;&#20987; <input id="settings-sync-scroll" type="checkbox" checked> &#21516;&#27493;&#28378;&#21160; <input id="settings-sync-track" type="checkbox" checked> &#21516;&#27493;&#36712;&#36857;</span></label></div></section><section class="sync-settings-section"><h3>&#20223;&#30495;&#25805;&#20316;</h3><div class="speed-setting"><label><input id="settings-delay-input" type="checkbox"> &#36755;&#20837;&#36895;&#24230;</label><span>&#22312;</span><input id="settings-input-min" type="number" min="0" max="5000" value="300"><b>-</b><input id="settings-input-max" type="number" min="0" max="5000" value="300"><span>ms &#20043;&#38388;&#38543;&#26426;</span></div><div class="speed-setting"><label><input id="settings-delay-click" type="checkbox"> &#28857;&#20987;&#36895;&#24230;</label><span>&#22312;</span><input id="settings-click-min" type="number" min="0" max="5000" value="100"><b>-</b><input id="settings-click-max" type="number" min="0" max="5000" value="300"><span>ms &#20043;&#38388;&#38543;&#26426;</span></div></section><div class="dialog-actions"><button value="cancel" class="outline">&#21462;&#28040;</button><button value="default" class="primary">&#20445;&#23384;</button></div></form></dialog>
+  <dialog id="profile-dialog"><form method="dialog" id="profile-form"><div class="dialog-head"><h2>新建浏览器环境</h2><button value="cancel">×</button></div><label>环境名称（自动编号）<input name="name" required readonly value="1"></label><div class="form-two"><label>浏览器<select name="browser"><option>Google Chrome</option></select></label><label>语言<select name="language"><option value="zh-CN">中文</option><option value="en-US">English (US)</option><option value="ja-JP">日本語</option></select></label></div><label>代理（可选）<input name="proxy" placeholder="host:port 或 socks5://host:port"></label><label>标签<input name="tag" placeholder="Demo"></label><div class="dialog-actions"><button value="cancel" class="outline">取消</button><button value="default" class="primary">创建</button></div></form></dialog>
+
+  <dialog id="batch-add-dialog"><form method="dialog" id="batch-add-form"><div class="dialog-head"><div><h2>批量新增环境</h2><p>环境编号与名称自动从当前最大编号继续递增</p></div><button value="cancel">&times;</button></div><div class="form-two"><label>新增数量<input id="batch-add-count" type="number" min="1" max="200" value="10" required></label><label>自动起始编号<input id="batch-add-start" type="number" min="1" value="5" readonly></label></div><div class="form-two"><label>语言<select id="batch-add-language"><option value="zh-CN">中文</option><option value="en-US">English (US)</option><option value="ja-JP">日本語</option></select></label><label>标签<input id="batch-add-tag" value="批量创建" maxlength="40"></label></div><label>代理列表（可选，每行一个）<textarea id="batch-add-proxies" placeholder="127.0.0.1:7890&#10;socks5://127.0.0.1:1080"></textarea></label><div class="dialog-actions"><button value="cancel" class="outline">取消</button><button value="default" class="primary">立即批量创建</button></div></form></dialog>
+
+  <dialog id="batch-delete-dialog"><form method="dialog" id="batch-delete-form"><div class="dialog-head"><div><h2>&#25209;&#37327;&#21024;&#38500;&#29615;&#22659;</h2><p id="batch-delete-summary"></p></div><button value="cancel">&times;</button></div><div class="delete-warning">&#27492;&#25805;&#20316;&#20250;&#20174;&#29615;&#22659;&#21015;&#34920;&#20013;&#31227;&#38500;&#25152;&#26377;&#24050;&#21246;&#36873;&#39033;&#12290;&#36816;&#34892;&#20013;&#30340;&#29615;&#22659;&#20250;&#20808;&#23433;&#20840;&#20572;&#27490;&#12290;</div><label class="assign-item"><input id="batch-delete-data" type="checkbox" checked> &#21516;&#26102;&#21024;&#38500;&#29420;&#31435;&#27983;&#35272;&#22120;&#25968;&#25454;&#65288;Cookie&#12289;&#32531;&#23384;&#12289;&#26412;&#22320;&#23384;&#20648;&#65289;</label><div class="dialog-actions"><button value="cancel" class="outline">&#21462;&#28040;</button><button value="default" class="danger">&#30830;&#35748;&#25209;&#37327;&#21024;&#38500;</button></div></form></dialog>
+
+  <dialog id="assign-dialog"><form method="dialog"><div class="dialog-head"><div><h2>批量分配应用</h2><p id="assign-extension-name"></p></div><button value="cancel">×</button></div><div id="assign-profile-list" class="assign-list"></div><div class="dialog-actions"><button value="cancel" class="outline">取消</button><button value="disable" class="danger" id="unassign-extension">移除选中</button><button value="enable" class="primary" id="assign-extension">添加到选中环境</button></div></form></dialog>
+  <dialog id="batch-update-dialog"><form method="dialog" id="batch-update-form"><div class="dialog-head"><div><h2>&#25209;&#37327;&#26356;&#26032;&#29615;&#22659;/IP</h2><p>&#27599;&#34892;&#19968;&#20010;&#20195;&#29702;&#65292;&#25353;&#36873;&#20013;&#29615;&#22659;&#39034;&#24207;&#24490;&#29615;&#20998;&#37197;</p></div><button value="cancel">&times;</button></div><label>&#20195;&#29702;&#21015;&#34920;<textarea id="batch-proxy-list" placeholder="127.0.0.1:7890&#10;socks5://127.0.0.1:1080"></textarea></label><label class="assign-item"><input id="restart-running" type="checkbox" checked> &#26356;&#26032;&#21518;&#33258;&#21160;&#37325;&#21551;&#21407;&#26412;&#36816;&#34892;&#30340;&#29615;&#22659;</label><div class="dialog-actions"><button value="cancel" class="outline">&#21462;&#28040;</button><button value="default" class="primary">&#24212;&#29992;&#26356;&#26032;</button></div></form></dialog><dialog id="add-app-dialog"><div class="dialog-head"><div><h2>&#28155;&#21152;&#24212;&#29992;</h2><p>&#20174;&#26412;&#22320;&#30446;&#24405;&#25110; Chrome &#24212;&#29992;&#21830;&#24215;&#28155;&#21152;</p></div><button id="close-add-app">&times;</button></div><div class="store-source-tabs"><button class="outline" id="choose-extension-folder">&#23433;&#35013;&#21253;&#30446;&#24405;</button><button class="primary" type="button">Chrome &#24212;&#29992;&#21830;&#24215;</button></div><label>Chrome &#24212;&#29992;&#21830;&#24215; URL<input id="chrome-store-url" placeholder="https://chromewebstore.google.com/detail/.../extension-id"></label><label class="assign-item"><input id="store-assign-all" type="checkbox" checked> &#28155;&#21152;&#21040;&#25152;&#26377;&#29615;&#22659;&#24182;&#37325;&#21551;&#27491;&#22312;&#36816;&#34892;&#30340;&#29615;&#22659;</label><p class="store-note">&#21482;&#25509;&#21463; Chrome Web Store &#38142;&#25509;&#65307;&#19979;&#36733;&#21518;&#20250;&#26657;&#39564; CRX &#26684;&#24335;&#21644;&#25991;&#20214;&#36335;&#24452;&#12290;</p><div class="dialog-actions"><button class="outline" id="cancel-add-app">&#21462;&#28040;</button><button class="primary" id="add-store-submit">&#30830;&#23450;&#28155;&#21152;</button></div></dialog><div class="toast" id="toast"></div>
+  <script src="environment-audit.js?v=20260717-v14"></script>
+  <script src="renderer.js?v=20260717-v14"></script>
+</body>
+</html>

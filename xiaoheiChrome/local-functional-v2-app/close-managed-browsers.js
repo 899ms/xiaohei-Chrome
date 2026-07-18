@@ -1,0 +1,3 @@
+const fs = require('fs/promises'); const path = require('path'); const cdp = require('./cdp');
+async function main(){const root=path.join(process.env.APPDATA||'', 'browserops-local-sync','browser-profiles-v2');let names=[];try{names=await fs.readdir(root);}catch(_){return;}let closed=0;for(const name of names){try{const raw=await fs.readFile(path.join(root,name,'DevToolsActivePort'),'utf8');const port=Number(raw.split(/\r?\n/)[0]);const version=await (await fetch(`http://127.0.0.1:${port}/json/version`)).json();await cdp.call(version.webSocketDebuggerUrl,'Browser.close');closed++;}catch(_){}}process.stdout.write(JSON.stringify({closed}));}
+main().catch(e=>{process.stderr.write(e.message);process.exitCode=1});
